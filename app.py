@@ -1,6 +1,8 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, redirect, url_for, flash
+from LogginForm import LogginForm
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'some key'
 
 
 @app.route('/')
@@ -9,9 +11,19 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/users')
+@app.route('/users', methods=['get', 'post'])
 def about_page():
-    return render_template('users.html')
+    form = LogginForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        password = form.password.data
+        print('Data input: ')
+        print(name)
+        print(password)
+        flash("You were successfully logged in", "success")
+        return redirect('/')
+
+    return render_template('users.html', form=form)
 
 
 @app.route('/users/<name>')
