@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Plans
+{% endblock %}
+
+
+{% block body %}
+
+
+
+<div class="d-grid col-2 mx-auto">
+  <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom:25px">
+    Create new plan
+  </a>
+</div>
+<div class="collapse" id="collapseExample" align="center" style="margin-bottom:25px">
+    <div class="col-6 max-auto card card-body">
+        <form class="center", method="POST">
+            {{form.csrf_token()}}
+            Plan name: {{form.name}}
+            {{form.submit}}
+        </form>
+    </div>
+</div>
+
+
+{% if plan_list|length > 0 %}
+    <div class="container-sm list-group">
+        {% for plan in plan_list %}
+            <a href={{"/plan/"+plan.id|string}} class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{plan.title}}</h5>
+              <small>{{plan.created_on}}</small>
+            </div>
+            <p class="mb-1">Some placeholder content in a paragraph.</p>
+            <small>And some small print.</small>
+            </a>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+{% endblock %}
+
