@@ -2,7 +2,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, make_response, session
 from LogginForms import LogginForm, NameCookie, NewPlanForm, NewPlanElement
 from flask_sqlalchemy import SQLAlchemy
-import sqlalchemy as alm
+from flask_migrate import Migrate
+import sqlalchemy as sa
 from datetime import datetime
 
 app = Flask(__name__)
@@ -12,6 +13,7 @@ app.permanent_session_lifetime = 60
 app.debug = True
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 kargs_base_template = dict()
 
@@ -77,7 +79,7 @@ def plans_page():
         flash(f"\"{plan_name}\" added!")
         return redirect('/plans')
 
-    plans = db.session.query(Plan).all()
+    plans = db.session.query(Plan).all()[::-1] # DESC
     return render_template('plans_page.html',
                            form=form,
                            plan_list = plans,
@@ -127,10 +129,10 @@ def urlss():
 
 class User(db.Model):
     __tablename__ = "Users"
-    id = alm.Column(alm.Integer, primary_key=True)
-    login = alm.Column(alm.String(80), unique=True, nullable=False)
-    name = alm.Column(alm.String(80), nullable=False)
-    created_on = alm.Column(alm.DateTime(), default=datetime.utcnow)
+    id = sa.Column(sa.Integer, primary_key=True)
+    login = sa.Column(sa.String(80), unique=True, nullable=False)
+    name = sa.Column(sa.String(80), nullable=False)
+    created_on = sa.Column(sa.DateTime(), default=datetime.utcnow)
 
     plans = db.relationship("Plan", backref="user", cascade="all,delete-orphan")
 
@@ -140,11 +142,11 @@ class User(db.Model):
 
 class Plan(db.Model):
     __tablename__ = "Plans"
-    id = alm.Column(alm.Integer, primary_key=True)
-    title = alm.Column(alm.String(80), unique=True, nullable=False)
-    user_id = alm.Column(alm.Integer, db.ForeignKey('Users.id'))
-    created_on = alm.Column(alm.DateTime(), default=datetime.utcnow)
-    updated_on = alm.Column(alm.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
+    id = sa.Column(sa.Integer, primary_key=True)
+    title = sa.Column(sa.String(80), unique=True, nullable=False)
+    user_id = sa.Column(sa.Integer, db.ForeignKey('Users.id'))
+    created_on = sa.Column(sa.DateTime(), default=datetime.utcnow)
+    updated_on = sa.Column(sa.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
 
     elements = db.relationship('ListElement', backref="plan", cascade="all,delete-orphan")
 
@@ -154,11 +156,11 @@ class Plan(db.Model):
 
 class ListElement(db.Model):
     __tablename__ = "ListElements"
-    id = alm.Column(alm.Integer, primary_key=True)
-    plan_id = alm.Column(alm.Integer, alm.ForeignKey('Plans.id'))
-    date = alm.Column(alm.DateTime)
-    text = alm.Column(alm.Text)
-    materials = alm.Column(alm.Text)
+    id = sa.Column(sa.Integer, primary_key=True)
+    plan_id = sa.Column(sa.Integer, sa.ForeignKey('Plans.id'))
+    date = sa.Column(sa.DateTime)
+    text = sa.Column(sa.Text)
+    materials = sa.Column(sa.Text)
 
     def __repr__(self):
         return f"!!!!{self.text}"
