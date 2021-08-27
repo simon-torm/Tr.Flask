@@ -30,6 +30,7 @@ def load_user(user_id):
     # print(user_id)
     return db.session.query(User).get(user_id)
 
+
 @app.before_request
 def set_session():
     global kargs_base_template
@@ -42,6 +43,7 @@ def set_session():
         session['counter'] += 1
     else:
         session['counter'] = 1
+
 
 @app.route('/')
 @app.route('/home')
@@ -136,7 +138,6 @@ def set_cookie_page():
 
         return res
 
-
     return render_template('cookie.html', form=form, **kargs_base_template)
 
 
@@ -166,7 +167,6 @@ def plans_page():
 def plan_page(id):
     if not bool(db.session.query(Plan).get(id)):
         return "This plan does not exist!", 404
-
 
     if not db.session.query(Plan).get(id).user_id == current_user.id:
         flash("You do not have access to this plan", 'danger')
@@ -264,8 +264,6 @@ class ListElement(db.Model):
 
     def __repr__(self):
         return f"!!!!{self.text}"
-
-
 
 
 
