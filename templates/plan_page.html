@@ -32,28 +32,24 @@ Plans
 
     </div>
 {%else%}
-    <h5 class="card card-body" align="center">Plan empty!</h5>
+    <h5 class="card card-body container col-10" align="center">Plan empty!</h5>
 {% endif %}
 
 <div class="d-grid col-2 mx-auto">
-  <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom:25px">
+  <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom:25px">
     Add element
   </a>
 </div>
 <div class="collapse" id="collapseExample" align="center" style="margin-bottom:25px">
     <div class="col-8 max-auto card card-body">
-        <form class="center", method="POST">
-            {{form.csrf_token()}}
+        <form class="center", action='' method="POST">
+            {{form.csrf_token}}
 
             {% for field in form if not ((field.name == "csrf_token") or (field.name == "submit"))%}
-                <p>{{ field.label() }}
-                {{ field }}</p>
-                {% for error in field.errors %}
-                    <p>{{ error.name }}</p>
-                {% endfor %}
+                <p>{{ field.label }} {{ field }}</p>
             {% endfor %}
 
-            <p>{{ form.submit }}</p>
+            <p>{{ form.submit() }}</p>
 
         </form>
     </div>

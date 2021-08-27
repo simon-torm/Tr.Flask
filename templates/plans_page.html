@@ -10,16 +10,22 @@ Plans
 
 
 <div class="d-grid col-2 mx-auto">
-  <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom:25px">
+  <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#collapseForm" role="button" aria-expanded="false" aria-controls="collapseExample" style="margin-bottom:25px">
     Create new plan
   </a>
 </div>
-<div class="collapse" id="collapseExample" align="center" style="margin-bottom:25px">
-    <div class="col-6 max-auto card card-body">
-        <form class="center", method="POST">
-            {{form.csrf_token()}}
-            Plan name: {{form.name}}
-            {{form.submit}}
+<div class="collapse" id="collapseForm" align="center" style="margin-bottom:25px">
+    <div class="col-4 max-auto card card-body">
+        <form method="POST">
+            {{ form.csrf_token() }}
+            <div class="row">
+                <div class="col-8">
+                    {{ form.name(class="form-control", placeholder="New plan") }}
+                </div>
+                <div class="col-4">
+                    {{ form.submit(class="btn btn-success") }}
+                </div>
+            </div>
         </form>
     </div>
 </div>

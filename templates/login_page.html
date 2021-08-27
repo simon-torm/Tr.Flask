@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<!--<div class="center">-->
+<!--    <h1>This is users page</h1>-->
+<!--</div>-->
+
+<div class="container-sm", align="center">
+    <form class="col-5" action="", method="POST">
+        {{ form.csrf_token() }}
+<!--        {% for field in form if not ((field.name == "csrf_token") or (field.name == "submit"))%}-->
+<!--            <p>{{ field.label() }}</p>-->
+<!--            <p>{{ field }}</p>-->
+<!--            {% for error in field.errors %}-->
+<!--                <p>{{ error.name }}</p>-->
+<!--            {% endfor %}-->
+<!--        {% endfor %}-->
+        <div class="row row-cols-2" style="margin-top:25px">
+            <div>
+                {{ form.name.label(class="col-sm-2 col-form-label") }}
+            </div>
+            <div style="margin-bottom:25px">
+                {{ form.name(class="form-control") }}
+            </div>
+            <div>
+                {{ form.password.label(class="col-sm-2 col-form-label") }}
+            </div>
+            <div style="margin-bottom:25px">
+                {{ form.password(class="form-control") }}
+            </div>
+            <div>
+                {{ form.remember_me.label(class="col-sm-2 col-form-label") }}
+            </div>
+            <div style="margin-bottom:25px" align="left">
+                {{ form.remember_me(class="form-check-input") }}
+            </div>
+        </div>
+            <div style="margin-bottom:25px">
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+    </form>
+
+    <div style="margin-bottom:25px">
+        <a class="btn btn-outline-secondary" data-bs-toggle="collapse" href="#collapseForm">To register</a>
+    </div>
+    <div class="col-6 collapse", id="collapseForm">
+        <div class="card card-body">
+            <form method="POST" class="row row-cols-2" >
+                {{ registration_form.csrf_token() }}
+                {% for field in registration_form if not ((field.name == "csrf_token") or (field.name == "registration_submit"))%}
+<!--                    <p>{{ field.label() }}</p>-->
+<!--                    <p>{{ field }}</p>-->
+<!--                    {% for error in field.errors %}-->
+<!--                        <p>{{ error.name }}</p>-->
+<!--                    {% endfor %}-->
+                    <div align="right">
+                        {{ field.label }}
+                    </div>
+                    <div style="margin-bottom:25px"  align="left">
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                    <div></div>
+                    <div class="center" style="margin-bottom:25px">
+                        {{ registration_form.registration_submit(class="btn btn-primary") }}
+                    </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
